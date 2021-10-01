@@ -14,6 +14,7 @@ const Pokemon = ({ pokemonName }: { pokemonName: string }) => {
   }
 
   const { id, name, sprites, types } = data;
+  const pokemonTypes = types.map((pokemonType: any) => pokemonType.type.name);
 
   return (
     <div>
@@ -22,7 +23,11 @@ const Pokemon = ({ pokemonName }: { pokemonName: string }) => {
         <div>#{id}</div>
       </div>
       <img src={sprites.front_default} alt={name} />
-      <div></div>
+      <div>
+        {pokemonTypes.map((pokemonType: string) => (
+          <div>{pokemonType}</div>
+        ))}
+      </div>
     </div>
   );
 };
