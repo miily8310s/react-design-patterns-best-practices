@@ -5,7 +5,6 @@ import Pokemon from "./Pokemon";
 
 const Pokedex = () => {
   const { data } = useSWR("https://pokeapi.co/api/v2/pokemon?limit=150");
-  console.log(data);
   if (!data.results || data.error) {
     return <div></div>;
   }
