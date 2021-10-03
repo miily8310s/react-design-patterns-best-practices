@@ -1,0 +1,5 @@
+# scalarは特別な型、デフォルトではInt、Stringなどが定義済み
+
+scalar UUID
+scalar Datetime
+scalar JSON

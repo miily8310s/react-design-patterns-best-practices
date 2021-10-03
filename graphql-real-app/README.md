@@ -19,6 +19,9 @@ createdb `whoami`
 // SQLを発行できるように
 psql
 
+// 存在するテーブル一覧の確認
+psql -l
+
 // postgresqlを止める
 brew services stop postgresql
 ```
