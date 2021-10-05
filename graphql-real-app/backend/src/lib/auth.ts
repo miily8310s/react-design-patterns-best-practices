@@ -16,19 +16,22 @@ export const doLogin = async (
   password: string,
   models: IModels
 ): Promise<IAuthPayload> => {
-  // TODO: コメントを追加する
+  // emailと一致するuserを取得
   const user = await getUserBy({ email }, models);
   if (!user) {
     throw new AuthenticationError("Invalid Error");
   }
+  // エンコードがかかったパスワードとuserのパスワードが一致するか確認
   const passwordMatch = isPasswordMatch(encrypt(password), user.password);
   if (!passwordMatch) {
     throw new AuthenticationError("Invalid Login");
   }
   const isActive = user.active;
+  // user.activeがfalseのときもエラーを吐かせる
   if (!isActive) {
     throw new AuthenticationError("Your account is not activated yet");
   }
+  // JWTトークンを生成
   const [token] = await createToken(user);
   return {
     token,

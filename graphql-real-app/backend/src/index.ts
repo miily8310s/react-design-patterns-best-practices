@@ -3,13 +3,33 @@ import { ApolloServer } from "apollo-server";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { $server } from "../config";
 
+import models from "./models";
+
+import typeDefs from "./graphql/types";
+import resolvers from "./graphql/resolvers";
+
 const ALTER = true;
 const FORCE = false;
 
-// const schema = makeExecutableSchema({});
+console.log("hoge");
+console.log(typeDefs, resolvers);
 
-// const apolloServer = new ApolloServer({ schema, context: {} });
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
 
-// apolloServer.listen($server.port).then(({ url }) => {
-//   console.log(`Running on ${url}`);
-// });
+console.log(schema);
+
+const apolloServer = new ApolloServer({
+  schema,
+  context: {
+    models,
+  },
+});
+
+models.sequelize.sync({ alter: ALTER, force: FORCE }).then(() => {
+  apolloServer.listen($server.port).then(({ url }) => {
+    console.log(`Running on ${url}`);
+  });
+});

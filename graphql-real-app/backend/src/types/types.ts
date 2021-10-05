@@ -1,3 +1,5 @@
+import { Sequelize } from "sequelize";
+
 export interface User {
   username: string;
   password: string;
@@ -6,7 +8,7 @@ export interface User {
   active: boolean;
 }
 
-export interface Sequelize {
+export interface ISequelize {
   _default: any;
   name?: string;
   options?: any;
@@ -24,7 +26,7 @@ export interface IDataTypes {
   FLOAT: number;
 }
 
-export interface IUser extends User, Sequelize {
+export interface IUser extends User, ISequelize {
   id: string;
   token?: string;
   createdAt?: Date;
@@ -44,5 +46,5 @@ export interface IAuthPayload {
 
 export interface IModels {
   User: any;
-  sequelize: any;
+  sequelize: Sequelize;
 }

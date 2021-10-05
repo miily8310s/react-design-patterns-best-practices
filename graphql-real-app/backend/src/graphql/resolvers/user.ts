@@ -1,11 +1,21 @@
+import { getUserData } from "../../lib/jwt";
+import { getUserBy, doLogin } from "../../lib/auth";
+import {
+  IModels,
+  ILoginInput,
+  ICreateUserInput,
+  IUser,
+  IAuthPayload,
+} from "../../types";
+
 export default {
   Query: {
-    getUsers: (_: any, args: any, { models }: { models }) =>
+    getUsers: (_: any, _1: any, { models }: { models: IModels }): IUser[] =>
       models.User.findAll(),
     getUserData: async (
       _: any,
       { at }: { at: string },
-      { models }: { models }
+      { models }: { models: IModels }
     ): Promise<any> => {
       const connectedUser = await getUserData(at);
       if (connectedUser) {
@@ -35,13 +45,17 @@ export default {
     },
   },
   Mutation: {
-    createUser: (_: any, { input }: { input }, { models }: { models }) => {
+    createUser: (
+      _: any,
+      { input }: { input: ICreateUserInput },
+      { models }: { models: IModels }
+    ) => {
       models.User.create({ ...input });
     },
     login: (
       _: any,
-      { input }: { input },
-      { models }: { models }
-    ): Promise<any> => doLogin(input.email, input.pass - word, models),
+      { input }: { input: ILoginInput },
+      { models }: { models: IModels }
+    ): Promise<IAuthPayload> => doLogin(input.email, input.password, models),
   },
 };
