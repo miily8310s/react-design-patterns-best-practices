@@ -5,6 +5,7 @@ export const isConnected =
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const user = getUserData(req.cookies.at);
     if (!user && !isLogged) {
+      console.log("hoge");
       return next();
     }
     if (user && isLogged) {
