@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
+import { getUserData } from "../jwt";
 
 export const isConnected =
   (isLogged = true, privileges = ["user"], redirectTo = "/") =>
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const user = getUserData(req.cookies.at);
+    const user = await getUserData(req.cookies.at);
     if (!user && !isLogged) {
       console.log("hoge");
       return next();
