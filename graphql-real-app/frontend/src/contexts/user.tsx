@@ -30,5 +30,42 @@ const UserProvider = ({ page = "", children }: IProps) => {
       at: cookies.at || "",
     },
   });
-  // TODO: useEffect以降をきさいする
+  useEffect(() => {
+    if (dataUser) {
+      if (!dataUser.getUserData.id && page !== "login") {
+        redirectTo("/login?redirectTo=/dashboard");
+      } else {
+        setConnectedUser(dataUser.getUserData);
+      }
+    }
+  }, [dataUser, page]);
+
+  async function login(input: {
+    email: string;
+    password: string;
+  }): Promise<any> {
+    try {
+      const { data: dataLogin } = await loginMutation({
+        variables: {
+          email: input.email,
+          password: input.password,
+        },
+      });
+      if (dataLogin) {
+        setCookies("at", dataLogin.login.token, { path: "/" });
+        return dataLogin.login.token;
+      }
+    } catch (err) {
+      return getGraphQlError(err);
+    }
+  }
+  const context = {
+    login,
+    connectedUser,
+  };
+  return (
+    <UserContext.Provider value={context}>{children}</UserContext.Provider>
+  );
 };
+
+export default UserProvider;
